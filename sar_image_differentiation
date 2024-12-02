@@ -1,0 +1,75 @@
+import numpy as np
+import cv2
+import matplotlib.pyplot as plt
+
+# read in images
+img1 = cv2.imread('sar_vv_timelapse_09.jpg')
+img1_gray = cv2.cvtColor(img1, cv2.COLOR_BGR2GRAY)
+img2 = cv2.imread('sar_vv_timelapse_87.jpg')
+img2_gray = cv2.cvtColor(img2, cv2.COLOR_BGR2GRAY)
+
+
+
+# Ensure both images are of the same size
+img1_gray = cv2.resize(img1_gray, (img2_gray.shape[1], img2_gray.shape[0]))
+
+# Compute absolute difference
+difference = cv2.absdiff(img1_gray, img2_gray)
+
+# Plot the images
+plt.figure(figsize=(12, 4))
+
+plt.subplot(1, 3, 1)
+plt.title('Image 1')
+plt.imshow(img1_gray)
+plt.axis('off')
+
+plt.subplot(1, 3, 2)
+plt.title('Image 2')
+plt.imshow(img2_gray)
+plt.axis('off')
+
+plt.subplot(1, 3, 3)
+plt.title('Difference')
+plt.imshow(difference)
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+
+
+
+# with preprocessing (gaussian blur)
+img1_processed = cv2.GaussianBlur(img1_gray, (7, 7), 0) 
+img2_processed = cv2.GaussianBlur(img2_gray, (7, 7), 0) 
+
+# Ensure both images are of the same size
+img1_processed = cv2.resize(img1_processed, (img2_processed.shape[1], img2_processed.shape[0]))
+
+# Compute absolute difference
+difference_processed = cv2.absdiff(img1_processed, img2_processed)
+
+# Plot the images
+plt.figure(figsize=(12, 4))
+
+plt.subplot(1, 3, 1)
+plt.title('Image 1 Processed')
+plt.imshow(img1_processed)
+plt.axis('off')
+
+plt.subplot(1, 3, 2)
+plt.title('Image 2 Processed')
+plt.imshow(img2_processed)
+plt.axis('off')
+
+plt.subplot(1, 3, 3)
+plt.title('Difference Processed')
+plt.imshow(difference_processed)
+plt.axis('off')
+
+plt.tight_layout()
+plt.show()
+
+#img1Edge = cv2.Sobel(img1_gray,cv2.CV_64F,1,0,ksize=3)
+#cv2.imshow('X Sobel 1', img1Edge) 
+#cv2.waitKey(0) 
